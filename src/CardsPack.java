@@ -3,6 +3,7 @@ import java.util.List;
 
 public class CardsPack {
     private List<Card> cardsPack;
+    private static final int COUNT_PACK_CARDS = 32;
 
     public CardsPack() {
         cardsPack = new ArrayList<>();
@@ -15,11 +16,21 @@ public class CardsPack {
 
     private void createCardsPack()
     {
+        int count = 7;
         for (NameCard nameCard: NameCard.values()) {
-            for (SuitCard suitCard: SuitCard.values()) {
-                cardsPack.add(new Card(nameCard,suitCard));
+            if (!nameCard.name().equals(NameCard.шесть.name())) {
+                for (SuitCard suitCard : SuitCard.values()) {
+                    if (!suitCard.name().equals(SuitCard.БК.name()))
+                        cardsPack.add(new Card(nameCard, suitCard, count));
+                }
+                count++;
             }
         }
+    }
+
+    public void remove(Card card)
+    {
+        cardsPack.remove(card);
     }
 
     public void add(Card card)
@@ -29,5 +40,14 @@ public class CardsPack {
 
     public List<Card> getCardsPack() {
         return cardsPack;
+    }
+
+    public static int getCountPackCards() {
+        return COUNT_PACK_CARDS;
+    }
+
+    public int size()
+    {
+        return cardsPack.size();
     }
 }
