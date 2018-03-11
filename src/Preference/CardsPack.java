@@ -24,9 +24,10 @@ public class CardsPack {
                 for (SuitCard suitCard : SuitCard.values()) {
                     if (!suitCard.name().equals(SuitCard.БК.name())) {
                         cardsPack.add(new Card(nameCard, suitCard, count));
-                        count++;
+
                     }
                 }
+                count++;
             }
         }
     }
