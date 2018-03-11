@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Preference</OriginalElement>
+  <nodes>
+    <node x="832.6088940047189" y="44.0">Preference.SuitCard</node>
+    <node x="425.30909090909097" y="1649.5">Preference.GameMode</node>
+    <node x="1116.5704338553599" y="3998.0">Preference.Play</node>
+    <node x="1146.97000511583" y="1363.0">Preference.Player</node>
+    <node x="455.19645466029476" y="338.0">Preference.Card</node>
+    <node x="1137.152065118976" y="873.0">Preference.Status</node>
+    <node x="542.5174035523296" y="2987.0">Preference.Distribution</node>
+    <node x="912.6840702189963" y="2354.0">Preference.Course</node>
+    <node x="1441.252252037178" y="2156.0">Preference.GroupPlayers</node>
+    <node x="1504.97000511583" y="839.5">Preference.CardsPack</node>
+    <node x="1737.97000511583" y="883.5">Preference.Spectator</node>
+    <node x="147.99659090909097" y="653.0">Preference.Trade</node>
+    <node x="1.25" y="2453.5">Preference.Rule</node>
+    <node x="423.68407021899634" y="2343.0">Preference.Table</node>
+    <node x="450.3588940047189" y="0.0">Preference.NameCard</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Preference.Trade" target="Preference.Card">
+      <point x="68.625" y="-290.0" />
+      <point x="308.12159090909097" y="583.0" />
+      <point x="471.7846899544124" y="583.0" />
+      <point x="-77.41176470588238" y="92.5" />
+    </edge>
+    <edge source="Preference.CardsPack" target="Preference.NameCard">
+      <point x="42.59999999999991" y="-103.5" />
+      <point x="1654.0700051158299" y="633.0" />
+      <point x="1669.8700051158298" y="633.0" />
+      <point x="1669.8700051158298" y="268.0" />
+      <point x="546.658894004719" y="268.0" />
+      <point x="42.80000000000007" y="114.0" />
+    </edge>
+    <edge source="Preference.CardsPack" target="Preference.Card">
+      <point x="-85.20000000000005" y="-103.5" />
+      <point x="1526.27000511583" y="563.0" />
+      <point x="615.5493958367654" y="563.0" />
+      <point x="66.35294117647061" y="92.5" />
+    </edge>
+    <edge source="Preference.Trade" target="Preference.NameCard">
+      <point x="-68.625" y="-290.0" />
+      <point x="170.87159090909097" y="633.0" />
+      <point x="169.15478799362813" y="633.0" />
+      <point x="169.15478799362813" y="258.0" />
+      <point x="482.4588940047189" y="258.0" />
+      <point x="-21.399999999999977" y="114.0" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Rule">
+      <point x="-170.38636363636374" y="-455.5" />
+      <point x="550.6310399159659" y="2967.0" />
+      <point x="60.0" y="2967.0" />
+      <point x="11.75" y="48.0" />
+    </edge>
+    <edge source="Preference.Table" target="Preference.Card">
+      <point x="-27.875" y="-158.5" />
+      <point x="618.8090702189963" y="2136.0" />
+      <point x="574.3588940047189" y="2136.0" />
+      <point x="574.3588940047189" y="623.0" />
+      <point x="549.1964546602948" y="623.0" />
+      <point x="0.0" y="92.5" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.Rule">
+      <point x="-148.57142857142844" y="-290.5" />
+      <point x="1127.9990052839314" y="3978.0" />
+      <point x="19.25" y="3978.0" />
+      <point x="19.25" y="2967.0" />
+      <point x="13.0" y="2967.0" />
+      <point x="-35.25" y="48.0" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.SuitCard">
+      <point x="24.340909090909122" y="-455.5" />
+      <point x="745.3583126432387" y="2877.0" />
+      <point x="880.1840702189963" y="2877.0" />
+      <point x="0.0" y="70.0" />
+    </edge>
+    <edge source="Preference.Card" target="Preference.NameCard">
+      <point x="-70.5" y="-92.5" />
+      <point x="478.69645466029476" y="268.0" />
+      <point x="503.8588940047189" y="268.0" />
+      <point x="0.0" y="114.0" />
+    </edge>
+    <edge source="Preference.Table" target="Preference.Player">
+      <point x="139.375" y="-158.5" />
+      <point x="786.0590702189963" y="2116.0" />
+      <point x="1161.7881869340117" y="2116.0" />
+      <point x="-148.18181818181824" y="356.5" />
+    </edge>
+    <edge source="Preference.Player" target="Preference.Status">
+      <point x="-144.8888888888889" y="-356.5" />
+      <point x="1165.081116226941" y="1263.0" />
+      <point x="1213.652065118976" y="1263.0" />
+      <point x="0.0" y="70.0" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Course">
+      <point x="73.02272727272725" y="-455.5" />
+      <point x="794.0401308250568" y="2907.0" />
+      <point x="958.6840702189963" y="2907.0" />
+      <point x="-138.0" y="147.5" />
+    </edge>
+    <edge source="Preference.GroupPlayers" target="Preference.Player">
+      <point x="-144.0" y="-345.5" />
+      <point x="1495.252252037178" y="2126.0" />
+      <point x="1428.5154596612845" y="2126.0" />
+      <point x="118.5454545454545" y="356.5" />
+    </edge>
+    <edge source="Preference.Course" target="Preference.Card">
+      <point x="0.0" y="-147.5" />
+      <point x="1096.6840702189963" y="2106.0" />
+      <point x="1053.4464546602949" y="2106.0" />
+      <point x="1053.4464546602949" y="593.0" />
+      <point x="582.3729252485301" y="593.0" />
+      <point x="33.17647058823536" y="92.5" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.GroupPlayers">
+      <point x="102.85714285714289" y="-290.5" />
+      <point x="1379.4275767125027" y="3958.0" />
+      <point x="1729.452252037178" y="3958.0" />
+      <point x="1729.452252037178" y="2967.0" />
+      <point x="1797.652252037178" y="2967.0" />
+      <point x="158.39999999999986" y="345.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Player">
+      <point x="121.7045454545455" y="-455.5" />
+      <point x="842.7219490068751" y="2937.0" />
+      <point x="1293.82043385536" y="2937.0" />
+      <point x="1293.82043385536" y="2136.0" />
+      <point x="1280.3336414794665" y="2136.0" />
+      <point x="-29.636363636363512" y="356.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.GameMode">
+      <point x="-40.568181818181756" y="-455.5" />
+      <point x="680.4492217341478" y="2887.0" />
+      <point x="408.8172066479576" y="2887.0" />
+      <point x="408.8172066479576" y="2136.0" />
+      <point x="445.6424242424242" y="2136.0" />
+      <point x="-40.66666666666674" y="70.0" />
+    </edge>
+    <edge source="Preference.CardsPack" target="Preference.Player">
+      <point x="-17.75" y="103.5" />
+      <point x="1593.72000511583" y="1323.0" />
+      <point x="1382.4144495602743" y="1323.0" />
+      <point x="72.44444444444434" y="-356.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Table">
+      <point x="-8.11363636363626" y="-455.5" />
+      <point x="712.9037671886933" y="2867.0" />
+      <point x="646.6840702189963" y="2867.0" />
+      <point x="0.0" y="158.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Status">
+      <point x="56.795454545454504" y="-455.5" />
+      <point x="777.8128580977841" y="2897.0" />
+      <point x="902.1840702189963" y="2897.0" />
+      <point x="902.1840702189963" y="1253.0" />
+      <point x="1162.652065118976" y="1253.0" />
+      <point x="-51.0" y="70.0" />
+    </edge>
+    <edge source="Preference.Card" target="Preference.SuitCard">
+      <point x="70.5" y="-92.5" />
+      <point x="619.6964546602948" y="298.0" />
+      <point x="854.199803095628" y="298.0" />
+      <point x="-25.909090909090878" y="70.0" />
+    </edge>
+    <edge source="Preference.Trade" target="Preference.SuitCard">
+      <point x="-22.875" y="-290.0" />
+      <point x="216.62159090909097" y="633.0" />
+      <point x="204.79639400471888" y="633.0" />
+      <point x="204.79639400471888" y="278.0" />
+      <point x="836.9270758229007" y="278.0" />
+      <point x="-43.18181818181813" y="70.0" />
+    </edge>
+    <edge source="Preference.Player" target="Preference.CardsPack">
+      <point x="0.0" y="-356.5" />
+      <point x="1309.97000511583" y="1303.0" />
+      <point x="1522.72000511583" y="1303.0" />
+      <point x="-88.75" y="103.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Card">
+      <point x="-73.02272727272725" y="-455.5" />
+      <point x="647.9946762796023" y="2907.0" />
+      <point x="374.49659090909097" y="2907.0" />
+      <point x="374.49659090909097" y="623.0" />
+      <point x="516.0199840720595" y="623.0" />
+      <point x="-33.17647058823525" y="92.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.NameCard">
+      <point x="-137.93181818181824" y="-455.5" />
+      <point x="583.0855853705114" y="2947.0" />
+      <point x="116.75" y="2947.0" />
+      <point x="116.75" y="248.0" />
+      <point x="461.05889400471887" y="248.0" />
+      <point x="-42.80000000000001" y="114.0" />
+    </edge>
+    <edge source="Preference.GroupPlayers" target="Preference.SuitCard">
+      <point x="180.0" y="-345.5" />
+      <point x="1819.252252037178" y="2136.0" />
+      <point x="1949.47000511583" y="2136.0" />
+      <point x="1949.47000511583" y="248.0" />
+      <point x="923.2907121865371" y="248.0" />
+      <point x="43.181818181818244" y="70.0" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.Card">
+      <point x="-102.85714285714289" y="-290.5" />
+      <point x="1173.713290998217" y="3958.0" />
+      <point x="105.75" y="3958.0" />
+      <point x="105.75" y="1343.0" />
+      <point x="341.49659090909097" y="1343.0" />
+      <point x="341.49659090909097" y="593.0" />
+      <point x="482.84351348382415" y="593.0" />
+      <point x="-66.35294117647061" y="92.5" />
+    </edge>
+    <edge source="Preference.Table" target="Preference.GameMode">
+      <point x="-195.125" y="-158.5" />
+      <point x="451.55907021899634" y="2136.0" />
+      <point x="486.30909090909097" y="2136.0" />
+      <point x="0.0" y="70.0" />
+    </edge>
+    <edge source="Preference.CardsPack" target="Preference.SuitCard">
+      <point x="85.20000000000005" y="-103.5" />
+      <point x="1696.67000511583" y="633.0" />
+      <point x="1680.8700051158298" y="633.0" />
+      <point x="1680.8700051158298" y="258.0" />
+      <point x="914.6543485501735" y="258.0" />
+      <point x="34.54545454545462" y="70.0" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.Spectator">
+      <point x="125.71428571428578" y="-290.5" />
+      <point x="1402.2847195696456" y="3968.0" />
+      <point x="1969.22000511583" y="3968.0" />
+      <point x="1969.22000511583" y="1343.0" />
+      <point x="1888.72000511583" y="1343.0" />
+      <point x="50.25" y="59.5" />
+    </edge>
+    <edge source="Preference.Course" target="Preference.Player">
+      <point x="147.20000000000005" y="-147.5" />
+      <point x="1243.8840702189964" y="2136.0" />
+      <point x="1250.6972778431027" y="2136.0" />
+      <point x="-59.27272727272725" y="356.5" />
+    </edge>
+    <edge source="Preference.Player" target="Preference.Spectator">
+      <point x="144.8888888888889" y="-356.5" />
+      <point x="1454.8588940047189" y="1343.0" />
+      <point x="1788.22000511583" y="1343.0" />
+      <point x="-50.25" y="59.5" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.Course">
+      <point x="-11.428571428571331" y="-290.5" />
+      <point x="1265.1418624267885" y="3918.0" />
+      <point x="1234.6840702189963" y="3918.0" />
+      <point x="138.0" y="147.5" />
+    </edge>
+    <edge source="Preference.GroupPlayers" target="Preference.Spectator">
+      <point x="144.0" y="-345.5" />
+      <point x="1783.252252037178" y="2126.0" />
+      <point x="1843.97000511583" y="2126.0" />
+      <point x="1843.97000511583" y="1343.0" />
+      <point x="1855.22000511583" y="1343.0" />
+      <point x="16.75" y="59.5" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.Trade">
+      <point x="-121.7045454545455" y="-455.5" />
+      <point x="599.3128580977841" y="2937.0" />
+      <point x="247.400539981291" y="2937.0" />
+      <point x="247.400539981291" y="1333.0" />
+      <point x="239.49659090909097" y="1333.0" />
+      <point x="0.0" y="290.0" />
+    </edge>
+    <edge source="Preference.GroupPlayers" target="Preference.Card">
+      <point x="-36.0" y="-345.5" />
+      <point x="1603.252252037178" y="2096.0" />
+      <point x="1494.47000511583" y="2096.0" />
+      <point x="1494.47000511583" y="573.0" />
+      <point x="604.4905723073535" y="573.0" />
+      <point x="55.29411764705878" y="92.5" />
+    </edge>
+    <edge source="Preference.Table" target="Preference.SuitCard">
+      <point x="27.875" y="-158.5" />
+      <point x="674.5590702189963" y="2136.0" />
+      <point x="667.7882575757576" y="2136.0" />
+      <point x="667.7882575757576" y="308.0" />
+      <point x="862.8361667319916" y="308.0" />
+      <point x="-17.272727272727252" y="70.0" />
+    </edge>
+    <edge source="Preference.Distribution" target="Preference.GroupPlayers">
+      <point x="170.38636363636363" y="-455.5" />
+      <point x="891.4037671886932" y="2967.0" />
+      <point x="1560.052252037178" y="2967.0" />
+      <point x="-79.20000000000005" y="345.5" />
+    </edge>
+    <edge source="Preference.GroupPlayers" target="Preference.CardsPack">
+      <point x="72.0" y="-345.5" />
+      <point x="1711.252252037178" y="2136.0" />
+      <point x="1695.914691381602" y="2136.0" />
+      <point x="1695.914691381602" y="1323.0" />
+      <point x="1700.22000511583" y="1323.0" />
+      <point x="88.75" y="103.5" />
+    </edge>
+    <edge source="Preference.Player" target="Preference.SuitCard">
+      <point x="-36.22222222222217" y="-356.5" />
+      <point x="1273.7477828936078" y="1293.0" />
+      <point x="1311.652065118976" y="1293.0" />
+      <point x="1311.652065118976" y="308.0" />
+      <point x="906.0179849138098" y="308.0" />
+      <point x="25.909090909090878" y="70.0" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.Player">
+      <point x="11.428571428571558" y="-290.5" />
+      <point x="1287.9990052839314" y="3918.0" />
+      <point x="1356.3465095634206" y="3918.0" />
+      <point x="1356.3465095634206" y="2136.0" />
+      <point x="1339.6063687521935" y="2136.0" />
+      <point x="29.636363636363512" y="356.5" />
+    </edge>
+    <edge source="Preference.Play" target="Preference.Distribution">
+      <point x="-57.14285714285711" y="-290.5" />
+      <point x="1219.4275767125027" y="3938.0" />
+      <point x="721.0174035523296" y="3938.0" />
+      <point x="0.0" y="455.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.30000000000000016" x="508.66666666666583" y="3946.666666666666" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
