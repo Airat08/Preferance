@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 public class Distribution {
-    private GroupPlayers groupPlayers;
-    private HashMap<Player, Card> winnerTrade;
-    private Table table;
-    private Rule rule;
-    private HashMap<Player, Card> winnerCurrentRound;
-    private HashMap<Player, Card> winnerPrevRound;
-    private List<Card> dumping;
-    private List<Course> courses;
-    private SuitCard trumpSuit;
+    private GroupPlayers groupPlayers;//сами игроки
+    private HashMap<Player, Card> winnerTrade;//победитель торговли
+    private Table table;//в столе определяется кто выигрыл раунд, тоесть идет сравнение карт
+    private Rule rule;//конвенция, нужна для начислении очков в гору в висты и в пулю
+    private List<Card> dumping;//сброшенные карты от игрока выигрывшего торговлю
+    private List<Course> courses;//сюда записываем каждый раунд в раздаче
+    private SuitCard trumpSuit;//устанавливается козырная после торговли
     private int indexFirstPlayerGoing;
     private int indexCurrentPlayerGoing;
-    private HashMap<Player, Card> cardForSession;
-    private static final Card DEFAULT_CARD = new Card(null,null, -1);
+    private HashMap<Player, Card> cardForSession;//карты с которыми ходят игроки (Хождение игроков определяется в метода, кто за кем)
     private static final int MAX_RANK_CARD = 100; //главное чтоб было большее число
+    private static final int DEFAULT_COUNT_MIZER = 5;//Если уменьшить то мизер будет частый
+    private static final int MAX_RANK_FOR_BK = 12;//Если у игрока будут большие карты, начиная с дамы,
+    // то он может взять контракт с БК(без козырей)
 
     public Distribution(GroupPlayers groupPlayers, Rule rule) {
         courses = new ArrayList<>();
@@ -31,59 +31,59 @@ public class Distribution {
         // TODO: 10.03.2018  //http://review-pref.ru/spravochnik/rus_pref/ Отсюда брал информацию по конвенциям
     }
 
-    private void start()
-    {
-        indexFirstPlayerGoing = groupPlayers.indexOfTheFirstPlayerGoing();
-        indexCurrentPlayerGoing = indexFirstPlayerGoing;
-        connectBetweenPlayers();
+    private void start() {
+        try {
+            indexFirstPlayerGoing = groupPlayers.indexOfTheFirstPlayerGoing();
+            indexCurrentPlayerGoing = indexFirstPlayerGoing;
+            connectBetweenPlayers();//устанавливаем для каждого игрока, кто на кого будет кидать висты (Слева и справо)
+            HashMap<Player, Card> winnerCurrentRound = new HashMap<>();
+            courses.add(new Course(0, groupPlayers.getPlayers(), winnerCurrentRound, null,cardForSession));
+            Player winnerTrade = trade(groupPlayers.getPlayers().get(indexFirstPlayerGoing));//происходит торговля игроков
+            Card minCardWinner = minCard(winnerTrade);//определяется карта с который будет ходить выигравший торговлю игрок
 
-        courses.add(new Course(0,groupPlayers.getPlayers(),winnerCurrentRound,winnerPrevRound));
-        Player winnerTrade = trade(groupPlayers.getPlayers().get(indexFirstPlayerGoing));
-        Card minCardWinner = minCard(winnerTrade);
 
-
-        if (!getGameMod().equals(GameMode.СВОЙ_ТОРГ) && !getGameMod().equals(GameMode.ПЕРЕРАЗДАЧА)) {
-            addCardForSession(winnerTrade, minCardWinner);
-            for (Player player : groupPlayers.getPlayers()) {
-                if (!this.winnerTrade.entrySet().iterator().next().getKey().equals(player)) {
-                    addCardForSession(player, minCard(player, minCardWinner.getSuit()));
-                }
-            }
-            table = new Table(getGameMod(), trumpSuit);
-            winnerPrevRound = table.solveWinnerSession(cardForSession);
-            winnerCurrentRound = winnerPrevRound;
-            courses.add(new Course(courses.size(), groupPlayers.getPlayers(), winnerCurrentRound, winnerPrevRound));
-
-            for (int i = 1; i < groupPlayers.getCountCardForPlayer(); i++) {
-                minCardWinner = minCard(winnerCurrentRound.entrySet().iterator().next().getKey());
-                addCardForSession(winnerCurrentRound.entrySet().iterator().next().getKey(), minCardWinner);
+            if (!getGameMod().equals(GameMode.СВОЙ_ТОРГ) && !getGameMod().equals(GameMode.ПЕРЕРАЗДАЧА)) {
+                addCardForSession(winnerTrade, minCardWinner);//добавляем карту для хода
                 for (Player player : groupPlayers.getPlayers()) {
-                    if (!winnerCurrentRound.entrySet().iterator().next().getKey().equals(player))
+                    if (!this.winnerTrade.entrySet().iterator().next().getKey().equals(player)) {
                         addCardForSession(player, minCard(player, minCardWinner.getSuit()));
+                    }
                 }
-                winnerPrevRound.clear();
-                winnerPrevRound = winnerCurrentRound;
-                winnerCurrentRound.clear();
-                winnerCurrentRound = table.solveWinnerSession(cardForSession);
-                courses.add(new Course(i+1, groupPlayers.getPlayers(), winnerCurrentRound, winnerPrevRound));
+                table = new Table(getGameMod(), trumpSuit);//инициализация стола
+
+                winnerCurrentRound = table.solveWinnerSession(cardForSession);//решает кто победител в этом раунде
+                Player playerPrevWinner = winnerTrade;
+                courses.add(new Course(courses.size(), groupPlayers.getPlayers(), winnerCurrentRound, playerPrevWinner,
+                        cardForSession));
+
+                for (int i = 1; i < groupPlayers.getCountCardForPlayer(); i++) {
+                    minCardWinner = minCard(winnerCurrentRound.entrySet().iterator().next().getKey());//победитель раунда выбирает карту для хода
+                    addCardForSession(winnerCurrentRound.entrySet().iterator().next().getKey(), minCardWinner);//фиксируется эта карта
+                    for (Player player : groupPlayers.getPlayers()) {//для остальных игроков
+                        if (!winnerCurrentRound.entrySet().iterator().next().getKey().equals(player))
+                            addCardForSession(player, minCard(player, minCardWinner.getSuit()));//выбирается карта с указанной мастью от победителя
+                        //предыдущего раунда
+                    }
+
+                    playerPrevWinner = winnerCurrentRound.entrySet().iterator().next().getKey();
+                    winnerCurrentRound.clear();
+                    winnerCurrentRound = table.solveWinnerSession(cardForSession);
+                    //записываем все в отдельном объекте, и храним текущий раунд
+                    courses.add(new Course(i + 1, groupPlayers.getPlayers(), winnerCurrentRound, playerPrevWinner,
+                            cardForSession));
+                }
+            } else if (GameMode.СВОЙ_ТОРГ.equals(getGameMod())) {//Происходит из за таких РЕАКЦИЯ игроков, как (ЗДЕСЬ, ПАСС, ПАСС)
+                Table table = new Table(GameMode.СВОЙ_ТОРГ, this.winnerTrade.entrySet().iterator().next().getValue().getSuit());
+                table.addPointPlayer(this.winnerTrade.entrySet().iterator().next().getKey(), getNumberContractForWinner());
+            }
+            for (Player player : groupPlayers.getPlayers()) {
+                calculation(player, rule, getGameMod());//подсчитываем пульку
             }
         }
-        else if (GameMode.СВОЙ_ТОРГ.equals(getGameMod()))
-        //todo я не успел сделать про такой сход событий
-        {//при таком раскладе я не понял, что кому начисляют, если (Пасс, Здесь, Пасс)
-            //что делать с игроком который с торговал и взял прикуп? а остальные пасс
-            //Table table = new Table(GameMode.СВОЙ_ТОРГ,this.winnerTrade.entrySet().iterator().next().getValue().getSuit());
-            //table.addPointPlayer(this.winnerTrade.entrySet().iterator().next().getKey(),getNumberContractForWinner());
-            //calculation(this.winnerTrade.entrySet().iterator().next().getKey(),rule,getGameMod());
-        }
-        for (Player player: groupPlayers.getPlayers()) {
-            calculation(player,rule,getGameMod());//подсчитываем пульку
-        }
-
-        /*else
+        catch (Exception ex)
         {
             start();
-        }*/
+        }
     }
 
     private void connectBetweenPlayers()
@@ -125,7 +125,20 @@ public class Distribution {
             switch (player.getStatus()) {
                 case ЗДЕСЬ: {//при таком раскладе я не понял, что кому начисляют, если (Пасс, Здесь, Пасс)
                     //что делать с игроком который с торговал и взял прикуп? а остальные пасс
-                    //player.addBullet(countBullet(rule, getNumberContractForWinner()));
+                    player.addBullet(countBullet(rule, getNumberContractForWinner()));
+                }
+            }
+        }
+        if (gameMode.equals(GameMode.МИЗЕР))
+        {
+            switch (player.getStatus())
+            {
+                case МИЗЕР:
+                {//я не заморачивался насчет 10, так как во всех конвенциях по 10
+                    //очков в пулю начисляется, не стал делать отдельный метод для этого
+                    if (player.getPoint()>= 10) player.addPoint(10);
+                    //11 контракт это мизер
+                    else player.addMount(countMount(rule,11,10-player.getPoint()));
                 }
             }
         }
@@ -144,6 +157,7 @@ public class Distribution {
                     case 8: return 6;
                     case 9: return 8;
                     case 10: return 10;
+                    case 11: return 10;//для мизера
                 }
             }
             case Сочи:
@@ -155,6 +169,7 @@ public class Distribution {
                     case 8: return 6;
                     case 9: return 8;
                     case 10: return 10;
+                    case 11: return 10;//для мизера
                 }
             }
             case Ростов:
@@ -166,6 +181,7 @@ public class Distribution {
                     case 8: return 6;
                     case 9: return 8;
                     case 10: return 10;
+                    case 11: return 10;//для мизера
                 }
             }
         }
@@ -188,6 +204,8 @@ public class Distribution {
                         return 16 * NOT_Enough;
                     case 10:
                         return 20 * NOT_Enough;
+                    case 11://для мизера
+                        return 20 * NOT_Enough;
                 }
             }
             case Сочи:
@@ -204,6 +222,8 @@ public class Distribution {
                         return 8 * NOT_Enough;
                     case 10:
                         return 10 * NOT_Enough;
+                    case 11://Для мизера
+                        return 10 * NOT_Enough;
                 }
             }
             case Ростов:
@@ -219,6 +239,8 @@ public class Distribution {
                     case 9:
                         return 8 * NOT_Enough;
                     case 10:
+                        return 10 * NOT_Enough;
+                    case 11://Для мизера
                         return 10 * NOT_Enough;
                 }
             }
@@ -350,9 +372,14 @@ public class Distribution {
             player.setHashMap(getStatisticCards(player));
         }
         winnerTrade = new HashMap<>();
-        winnerTrade.put(firstGoingPlayer, getCountMaxCard(firstGoingPlayer));
-        for (int i = 0; i < groupPlayers.getPlayers().size() - 1; i++) {
-            compare(groupPlayers.getPlayers().get(groupPlayers.indexNextGoingPlayer(indexCurrentPlayerGoing)));
+
+        winnerTrade.put(firstGoingPlayer, null);
+        if (checkedOnMizer()) winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.МИЗЕР);
+        else winnerTrade.entrySet().iterator().next().setValue(getCountMaxCard(firstGoingPlayer));
+
+
+        for (int i = 0; i < groupPlayers.getPlayers().size() - 1; i++) {//Идем последовательно (ПО ПРАВИЛАМ)
+            compare(groupPlayers.nextGoingPlayer(groupPlayers.getPlayers().get(indexCurrentPlayerGoing)));
             indexCurrentPlayerGoing = groupPlayers.indexNextGoingPlayer(indexCurrentPlayerGoing);
         }
         for (Card card:groupPlayers.getPrikup()) { //Выигравшему торг, отдаем карты с прикупа (по правилам)
@@ -372,51 +399,115 @@ public class Distribution {
     }
 
     private boolean compare(Player player)//Спрашивает бота, что ты будешь делать :)
-            //todo переделать этот метод по другому
-    {//todo мизер не успел продумать
-        Card cardPlayer1, cardPlayer2;
-
-        if (winnerTrade.entrySet().iterator().next().getValue() == null)
-        {
-            cardPlayer1 = DEFAULT_CARD;//чтобы не поймали nullPointer
-            winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ПАСС);
-        }
-        else
-        {
-            cardPlayer1 = winnerTrade.entrySet().iterator().next().getValue();
-            winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
-        }
-        if (getCountMaxCard(player) == null)
-        {
-            //cardPlayer2 = DEFAULT_CARD;
-            player.setStatus(Status.ПАСС);
-            return false;
-        }
-        else
-        {
-            cardPlayer2 = getCountMaxCard(player);
-            player.setStatus(Status.ЗДЕСЬ);
+    {
+        //если первый игрок не объявил мизер
+        if (!winnerTrade.entrySet().iterator().next().getKey().getStatus().equals(Status.МИЗЕР)) {
+            return solvePlayersStatusNOMizer(player);
         }
 
-        if (cardPlayer1.getRank()<cardPlayer2.getRank()-3)//почему минус 3, чтобы по реже были пасы (для логики)
+        else // и тут если объявил
         {
-            winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ПАСС);
-            winnerTrade.clear();
-            winnerTrade.put(player,cardPlayer2);
-            player.setStatus(Status.ЗДЕСЬ);
-            return true;
+            return solvePlayersStatusMizer(player);
         }
-        else if (cardPlayer1.getRank()<=cardPlayer2.getRank()+3)//Чтоб висты по чаще были
-        {
-            winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
-            player.setStatus(Status.ВИСТ);
-            return false;
+    }
+
+    //алгоритм таков, если у игрока количество карт достигает указанного т.е. у него должны быть такие карты как 7, 8, 9
+    //если кол-во этих карт вместе взятых достигает числа 5, то игрок заявляет МИЗЕР
+    private boolean checkedOnMizer()//проверка первого игрока, не хочет ли он мизер(ПО ПРАВИЛАМ)
+    {
+        int count = 0;
+        List<Card> cardsPlayer = winnerTrade.entrySet().iterator().next().getKey().getCards().getCardsPack();
+        for (Card card: cardsPlayer) {
+            if (card.getName().equals(NameCard.семь) ||
+                    card.getName().equals(NameCard.восемь) ||
+                    card.getName().equals(NameCard.девять))
+                count++;
         }
-        else
+        return (count>=DEFAULT_COUNT_MIZER);
+    }
+
+    private boolean solvePlayersStatusMizer(Player player)//Логика ботов при МИЗЕРЕ
+    {//Исход такого события очень редок
+        try {
+            if (getCountMaxCard(player).getRank() >= Trade.nineSpades.getRank())//Сбить мизер можно лишь со ставкой 9 или 10 (ПО ПРАВИЛАМ)
+            {
+                if (getCountMaxCard(winnerTrade.entrySet().iterator().next().getKey()).getRank() <
+                        getCountMaxCard((player)).getRank()) {
+                    winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ПАСС);
+                    winnerTrade.clear();
+                    player.setStatus(Status.ЗДЕСЬ);
+                    winnerTrade.put(player, getCountMaxCard(player));
+                    return true;
+                } else if (getCountMaxCard(winnerTrade.entrySet().iterator().next().getKey()).getRank() ==
+                        getCountMaxCard((player)).getRank()) {
+                    winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ВИСТ);
+                    winnerTrade.clear();
+                    player.setStatus(Status.ЗДЕСЬ);
+                    winnerTrade.put(player, getCountMaxCard(player));
+                    return true;
+                } else {
+                    winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
+                    player.setStatus(Status.ПАСС);
+                    return false;
+                }
+            } else {
+                player.setStatus(Status.ПАСС);
+            }
+        }
+        catch (Exception ex)//Возникает, если у игрока нет даже 3х одинаковых мастей (МОЯ ЛОГИКА ДЛЯ БОТОВ)
         {
-            winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
             player.setStatus(Status.ПАСС);
-            return false;
+        }
+        return false;
+    }
+
+    private boolean solvePlayersStatusNOMizer(Player player)
+    {
+        Card cardPlayer1 = winnerTrade.entrySet().iterator().next().getValue(),
+                cardPlayer2 = null;
+        try {
+            if (cardPlayer1 == null) {
+                winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ПАСС);
+            } else {
+                cardPlayer1 = winnerTrade.entrySet().iterator().next().getValue();
+                winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
+            }
+            if (getCountMaxCard(player) == null) {
+                player.setStatus(Status.ПАСС);
+                return false;
+            } else {
+                cardPlayer2 = getCountMaxCard(player);
+                player.setStatus(Status.ЗДЕСЬ);
+            }
+
+            if (cardPlayer1.getRank() < cardPlayer2.getRank() - 3)//почему минус 3, чтобы по реже были пасы (для логики)
+            {
+                winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ПАСС);
+                winnerTrade.clear();
+                player.setStatus(Status.ЗДЕСЬ);
+                winnerTrade.put(player, cardPlayer2);
+                return true;
+            } else if (cardPlayer1.getRank() <= cardPlayer2.getRank() + 3)//Чтоб висты по чаще были
+            {
+                winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
+                player.setStatus(Status.ВИСТ);
+                return false;
+            } else {
+                winnerTrade.entrySet().iterator().next().getKey().setStatus(Status.ЗДЕСЬ);
+                player.setStatus(Status.ПАСС);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+           if (cardPlayer2!=null)
+           {
+               winnerTrade.clear();
+               player.setStatus(Status.ЗДЕСЬ);
+               winnerTrade.put(player,cardPlayer2);
+               return true;
+           }
+           return false;
         }
     }
 
@@ -427,7 +518,7 @@ public class Distribution {
             statuses.add(player.getStatus());
         }
         if (statuses.contains(Status.НЕ_ЗАДЕЙСТВОВАН)) return GameMode.ПЕРЕРАЗДАЧА;
-        if (statuses.contains(Status.МИЗЕР)) return GameMode.МИЗЕР;//todo про мизер не успел продумать логику боту
+        if (statuses.contains(Status.МИЗЕР)) return GameMode.МИЗЕР;
         if (statuses.contains(Status.ЗДЕСЬ) && statuses.contains(Status.ВИСТ)) return GameMode.ВИСТ;
         if (statuses.contains(Status.ЗДЕСЬ) && !statuses.contains(Status.ВИСТ)) return GameMode.СВОЙ_ТОРГ;
         return GameMode.РАСПАСОВКА;
@@ -596,10 +687,10 @@ public class Distribution {
     }
 
     private HashMap<Integer, SuitCard> getStatisticCards(Player player)
-    {//Без козырей надо продумать логику бота
+    {
         HashMap<Integer, SuitCard> hashMap = new HashMap<>();
         for (SuitCard suit: SuitCard.values()) {
-            hashMap.put(countSuit(player,suit),suit);//Без козыря надо отдельно считать
+            hashMap.put(countSuit(player,suit),suit);
         }
         return hashMap;
     }
@@ -607,10 +698,22 @@ public class Distribution {
     private int countSuit(Player player, SuitCard suit)//Количество одинаковых мастей
     {
         int count = 0;
+        if (suit.equals(SuitCard.БК))
+        {
+            for (Card card:player.getCards().getCardsPack()) {
+                if (card.getRank()>MAX_RANK_FOR_BK) count++;
+            }
+            return count;
+        }
+        else
         for (Card card:player.getCards().getCardsPack()) {
             if (card.getSuit().equals(suit)) count++;
         }
         return count;
+    }
+
+    public void setWinnerTrade(HashMap<Player, Card> winnerTrade) {
+        this.winnerTrade = winnerTrade;
     }
 
     public GroupPlayers getGroupPlayers() {
@@ -621,12 +724,35 @@ public class Distribution {
         return winnerTrade;
     }
 
+    public String processTrade()
+    {
+        StringBuilder stringBuilder = new StringBuilder("Торговлю начал - ").
+                append(groupPlayers.getPlayers().get(getIndexFirstPlayerGoing())).append("\n")
+                .append("Торговлю выиграл - ").append(winnerTrade.entrySet().iterator().next().getKey());
+        if (winnerTrade.entrySet().iterator().next().getValue()==null) stringBuilder
+                .append("Контракт - ").append(getGameMod()).append("\n");
+        else stringBuilder.append("С контрактом - ")
+                .append(winnerTrade.entrySet().iterator().next().getValue()).append("\n")
+                .append("В прикупе лежит - ").append(groupPlayers.getPrikup()).append("\n")
+                .append("Выигрывший торговлю сделал сброс - ").append(dumping).append("\n");
+        stringBuilder.append("Реакция остальных:").append("\n");
+        for (Player player : groupPlayers.getPlayers()) {
+            if (player!=winnerTrade.entrySet().iterator().next().getKey())
+                stringBuilder.append(player).append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("Торговлю начал - ").
-                append(groupPlayers.getPlayers().get(groupPlayers.indexOfTheFirstPlayerGoing())).append("\n")
-                .append("Торговлю выиграл - ").append(winnerTrade.entrySet().iterator().next().getKey())
-                .append("С контрактом - ").append(winnerTrade.entrySet().iterator().next().getValue()).append("\n")
+                append(groupPlayers.getPlayers().get(getIndexFirstPlayerGoing())).append("\n")
+                .append("Торговлю выиграл - ").append(winnerTrade.entrySet().iterator().next().getKey());
+                if (winnerTrade.entrySet().iterator().next().getValue()==null) stringBuilder
+                .append("Контракт - ").append(getGameMod()).append("\n");
+                else stringBuilder.append("С контрактом - ")
+                        .append(winnerTrade.entrySet().iterator().next().getValue()).append("\n")
                 .append("В прикупе лежит - ").append(groupPlayers.getPrikup()).append("\n")
                 .append("Выигрывший торговлю сделал сброс - ").append(dumping).append("\n")
                 .append("\n")

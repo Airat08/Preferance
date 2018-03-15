@@ -10,7 +10,7 @@ public class Player {
     private int point;
     private int mount;//гора
     private int bullet;//пуля
-    private HashMap<Player,Integer> whist;//висты на игроков
+    private HashMap<Player,Integer> whist;//висты на игроков (слева и справо)(связи устанавливаются в Distribution)
     private HashMap<Integer, SuitCard> hashMap;
     private static final int DEFAULT_POINT = 0;
 
@@ -121,6 +121,7 @@ public class Player {
 
     @Override
     public boolean equals(Object obj) {//Переопределил пока на время, но это не правильно
+        //правильнее было бы сделать с помощью уникального идентификатора (Применить сессии)
         if (this == obj) return true;
         if (this.getClass()!=obj.getClass()) return false;
         if (obj==null) return false;

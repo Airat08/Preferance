@@ -16,7 +16,7 @@ public class CardsPack {
         cardsPack = new ArrayList<>(size);
     }
 
-    private void createCardsPack()
+    private void createCardsPack()//создание колоды для преферанса, тоесть без шестерки
     {
         int count = 7;
         for (NameCard nameCard: NameCard.values()) {
@@ -24,7 +24,6 @@ public class CardsPack {
                 for (SuitCard suitCard : SuitCard.values()) {
                     if (!suitCard.name().equals(SuitCard.БК.name())) {
                         cardsPack.add(new Card(nameCard, suitCard, count));
-
                     }
                 }
                 count++;

@@ -28,8 +28,7 @@ public class Card {
         StringBuilder stringBuilder = new StringBuilder();
         if (name!=null)
             stringBuilder.append(name.name())
-                .append(" ").append(suit.name())
-                .append(" ранк (").append(rank).append(")");
+                .append(" ").append(suit.name());
         return stringBuilder.toString();
     }
 }

@@ -9,16 +9,18 @@ public class Course {
     private int ID;//номер раунда
     private HashMap<Player,List<Card>> players;//информация по игрокам за текущий раунд
     private HashMap<Player, Card> winnerCurrentRound;//победитель в этом раунде и следующий раздающий
-    private HashMap<Player, Card> winnerPrevRound;//раздающий
+    private Player winnerPrevRound;//раздающий
+    private HashMap<Player, Card> cardsForSession;//карты с которыми игроки сходили
 
-    public Course(int ID, List<Player> players, HashMap<Player, Card> winnerCurrentRound, HashMap<Player, Card> winnerPrevRound) {
+    public Course(int ID, List<Player> players, HashMap<Player, Card> winnerCurrentRound, Player winnerPrevRound,
+                  HashMap<Player, Card> cardsForSession) {
         this.ID = ID;
         this.players = new HashMap<>();
         addCardsPlayer(players);
+        this.cardsForSession = cardsForSession;
         if (winnerCurrentRound!=null)
         addWinnerCurrentRound(winnerCurrentRound);
-        if (winnerPrevRound!=null)
-        addWinnerPrevRound(winnerPrevRound);
+        this.winnerPrevRound = winnerPrevRound;
     }
 
     private void addCardsPlayer(List<Player> players)
@@ -36,6 +38,7 @@ public class Course {
     private void addWinnerCurrentRound(HashMap<Player, Card> winnerCurrentRound)
     {
         this.winnerCurrentRound = new HashMap<>();
+        this.winnerCurrentRound.clear();
         Player player = null;
         Card card = null;
         int temp = winnerCurrentRound.size()-1;
@@ -53,25 +56,6 @@ public class Course {
         this.winnerCurrentRound.put(player,card);
     }
 
-    private void addWinnerPrevRound(HashMap<Player, Card> winnerPrevRound)
-    {
-        this.winnerPrevRound = new HashMap<>();
-        Player player = null;
-        Card card = null;
-        int temp = winnerPrevRound.size()-1;
-        int count = 0;
-        for (Map.Entry entry: winnerPrevRound.entrySet()) {
-            if (count==temp) {
-                card = new Card(((Card) entry.getValue()).getName(),
-                        ((Card) entry.getValue()).getSuit(),
-                        ((Card) entry.getValue()).getRank());
-                player = (Player) entry.getKey();
-            }
-            count++;
-        }
-        this.winnerPrevRound.put(player,card);
-    }
-
     public int getID() {
         return ID;
     }
@@ -84,21 +68,27 @@ public class Course {
         return winnerCurrentRound;
     }
 
-    public HashMap<Player, Card> getWinnerPrevRound() {
-        return winnerPrevRound;
-    }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Номер раунда в раздаче = ").append(ID).append("\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        if (ID == 0) stringBuilder = new StringBuilder("Номер раунда в раздаче = ").append(ID)
+                .append(" Изначальный вариант карт (БЕЗ СБРОСА)").append("\n");
+        else stringBuilder.append("Номер раунда в раздаче = ").append(ID).append("\n");
         if (winnerPrevRound!= null && winnerCurrentRound!=null) {
-            stringBuilder.append("Раздающий - ").append(winnerPrevRound.entrySet().iterator().next().getKey()).append("\n");
+            stringBuilder.append("Ходит игрок - ").append(winnerPrevRound).append("\n");
             stringBuilder.append("Победитель в раунде (получивший взятку) - ").append(winnerCurrentRound.entrySet().iterator().next().getKey())
                     .append("С картой ").append(winnerCurrentRound.entrySet().iterator().next().getValue())
                     .append("\n")
-            .append("\n");
+            .append("\n")
+            .append("Игроки сходили с такими картами: (Расположены не в порядке хода)").append("\n");
+            for (Map.Entry entry: cardsForSession.entrySet()) {
+                stringBuilder.append(((Player)entry.getKey()).getPlayer().getFirstName()).append(" ")
+                        .append(((Player)entry.getKey()).getPlayer().getSecondName()).append(" сходил с ")
+                        .append(entry.getValue()).append("\n");
+            }
         }
-        stringBuilder.append("Остались такие карты:\n");
+        stringBuilder.append("\nОстались такие карты:\n");
         for (Map.Entry entry: players.entrySet()) {
             stringBuilder.append(entry.getKey());
             for (Card card: (List<Card>)entry.getValue()) {

@@ -1,6 +1,7 @@
 package Preference;
 
 public abstract class Trade {
+    //Это контракты в торговле не считая мизер и расспасовку(они расмотрены как перечисление)
     public static Card sixSpades = new Card(NameCard.шесть, SuitCard.пики, 0);
     public static Card sixClubs = new Card(NameCard.шесть, SuitCard.треф,1);
     public static Card sixDiamonds = new Card(NameCard.шесть, SuitCard.бубн,2);
@@ -30,28 +31,4 @@ public abstract class Trade {
     public static Card tenDiamonds = new Card(NameCard.десять, SuitCard.бубн,22);
     public static Card tenHeart = new Card(NameCard.десять, SuitCard.черви,23);
     public static Card tenBC = new Card(NameCard.десять, SuitCard.БК,24);
-
-    /*public static Card jackSpades = new Card(NameCard.валет,SuitCard.пики, 0);
-    public static Card jackClubs = new Card(NameCard.валет,SuitCard.треф,1);
-    public static Card jackHeart = new Card(NameCard.валет,SuitCard.черви,3);
-    public static Card jackDiamonds = new Card(NameCard.валет,SuitCard.бубн,2);
-    public static Card jackBC = new Card(NameCard.валет,SuitCard.БК,4);
-
-    public static Card queenSpades = new Card(NameCard.дама,SuitCard.пики, 0);
-    public static Card queenClubs = new Card(NameCard.дама,SuitCard.треф,1);
-    public static Card queenHeart = new Card(NameCard.дама,SuitCard.черви,3);
-    public static Card queDiamonds = new Card(NameCard.дама,SuitCard.бубн,2);
-    public static Card queenBC = new Card(NameCard.дама,SuitCard.БК,4);
-
-    public static Card kingSpades = new Card(NameCard.король,SuitCard.пики, 0);
-    public static Card kingClubs = new Card(NameCard.король,SuitCard.треф,1);
-    public static Card kingHeart = new Card(NameCard.король,SuitCard.черви,3);
-    public static Card kingDiamonds = new Card(NameCard.король,SuitCard.бубн,2);
-    public static Card kingBC = new Card(NameCard.король,SuitCard.БК,4);
-
-    public static Card aceSpades = new Card(NameCard.туз,SuitCard.пики, 0);
-    public static Card aceClubs = new Card(NameCard.туз,SuitCard.треф,1);
-    public static Card aceHeart = new Card(NameCard.туз,SuitCard.черви,3);
-    public static Card aceDiamonds = new Card(NameCard.туз,SuitCard.бубн,2);
-    public static Card aceBC = new Card(NameCard.туз,SuitCard.БК,4);*/
 }

@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class GroupPlayers {
     private List<Spectator> spectators;
-    private List<Player> groupPlayers;//псоледний будет прикуп
+    private List<Player> groupPlayers;
     private List<Card> cardPacks;
     private CardsPack pack;
     private List<Card> prikup;

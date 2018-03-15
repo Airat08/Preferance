@@ -16,4 +16,11 @@ public class Spectator {
     public String getSecondName() {
         return secondName;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(firstName).append(" ")
+                .append(secondName);
+        return stringBuilder.toString();
+    }
 }

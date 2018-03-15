@@ -76,10 +76,10 @@ public class Table {
         return null;
     }
 
-    /*public void addPointPlayer(Player player, int contractNumber)
+    public void addPointPlayer(Player player, int numberPointContract)
     {
-        player.addPoint(contractNumber);
-    }*/
+        player.addPoint(numberPointContract);
+    }
 
     public HashMap<Player, Card> getWinnerRound() {
         return winnerRound;
